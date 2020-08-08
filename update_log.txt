@@ -1,0 +1,4 @@
+08/08/2020
+1、 exports the interfaces that I often use. 
+2、 bases on win10  + vs2015 up3
+3、 creates dynamic library 
