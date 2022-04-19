@@ -6,7 +6,8 @@
 # or copy at http://opensource.org/licenses/MIT)
 cmake_minimum_required(VERSION 3.9) # for "CMAKE_CXX_STANDARD" version
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake") # custom CMake modules like FindSQLiteCpp
-project(SQLiteCpp VERSION 3.1.1)
+# This is fork of version: 3.1.1
+project(SQLiteCpp VERSION 3.38.2)
 
 # SQLiteC++ 3.x requires C++11 features
 if (NOT CMAKE_CXX_STANDARD)
