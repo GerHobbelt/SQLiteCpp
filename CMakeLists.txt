@@ -4,7 +4,7 @@
 #
 # Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
 # or copy at http://opensource.org/licenses/MIT)
-cmake_minimum_required(VERSION 3.1) # for "CMAKE_CXX_STANDARD" version
+cmake_minimum_required(VERSION 3.9) # for "CMAKE_CXX_STANDARD" version
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake") # custom CMake modules like FindSQLiteCpp
 project(SQLiteCpp VERSION 3.1.1)
 
@@ -451,3 +451,10 @@ endif (SQLITECPP_BUILD_TESTS)
 
 # API version for SQLiteCpp shared library.
 set_property(TARGET SQLiteCpp PROPERTY SOVERSION 0)
+
+include(CheckIPOSupported)
+check_ipo_supported(RESULT result)
+if (result AND (CMAKE_BUILD_TYPE STREQUAL Release))
+# if (CMAKE_BUILD_TYPE STREQUAL Release)
+    set_property(TARGET SQLiteCpp PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+endif ()
