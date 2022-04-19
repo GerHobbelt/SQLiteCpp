@@ -182,6 +182,17 @@ if (SQLITE_ENABLE_COLUMN_METADATA)
     target_compile_definitions(SQLiteCpp PUBLIC SQLITE_ENABLE_COLUMN_METADATA)
 endif (SQLITE_ENABLE_COLUMN_METADATA)
 
+option(SQLITE_ENABLE_RTREE "Enable include support for the R*Tree index extension." ON)
+if (SQLITE_ENABLE_RTREE)
+    target_compile_definitions(SQLiteCpp PUBLIC SQLITE_ENABLE_RTREE)
+endif (SQLITE_ENABLE_RTREE)
+
+option(SQLITE_ENABLE_FTS3 "Enable FTS3 full-text search" ON)
+if (SQLITE_ENABLE_FTS3)
+    target_compile_definitions(SQLiteCpp PUBLIC SQLITE_ENABLE_FTS3)
+    target_compile_definitions(SQLiteCpp PUBLIC SQLITE_ENABLE_FTS3_PARENTHESIS)
+endif (SQLITE_ENABLE_FTS3)
+
 option(SQLITE_ENABLE_ASSERT_HANDLER "Enable the user definition of a assertion_failed() handler." OFF)
 if (SQLITE_ENABLE_ASSERT_HANDLER)
     # Enable the user definition of a assertion_failed() handler (default to false, easier to handler for beginners).

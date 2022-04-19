@@ -3,7 +3,7 @@
 # Copyright (c) 2012-2020 Sebastien Rombauts (sebastien.rombauts@gmail.com)
 #
 # Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
-# or copy at http://opensource.org/licenses/MIT) 
+# or copy at http://opensource.org/licenses/MIT)
 
 # add sources of the "sqlite3" static library
 add_library(sqlite3
@@ -20,6 +20,15 @@ if (SQLITE_ENABLE_COLUMN_METADATA)
     # Require that the sqlite3 library is also compiled with this flag:
     target_compile_definitions(sqlite3 PUBLIC SQLITE_ENABLE_COLUMN_METADATA)
 endif (SQLITE_ENABLE_COLUMN_METADATA)
+
+if (SQLITE_ENABLE_RTREE)
+    target_compile_definitions(sqlite3 PUBLIC SQLITE_ENABLE_RTREE)
+endif (SQLITE_ENABLE_RTREE)
+
+if (SQLITE_ENABLE_FTS3)
+    target_compile_definitions(sqlite3 PUBLIC SQLITE_ENABLE_FTS3)
+    target_compile_definitions(sqlite3 PUBLIC SQLITE_ENABLE_FTS3_PARENTHESIS)
+endif (SQLITE_ENABLE_FTS3)
 
 if (SQLITE_ENABLE_JSON1)
     # Enable JSON1 extension when building sqlite3
