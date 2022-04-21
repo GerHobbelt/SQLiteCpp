@@ -30,6 +30,10 @@ if (SQLITE_ENABLE_FTS3)
     target_compile_definitions(sqlite3 PUBLIC SQLITE_ENABLE_FTS3_PARENTHESIS)
 endif (SQLITE_ENABLE_FTS3)
 
+if (SQLITE_ENABLE_STAT4)
+    target_compile_definitions(sqlite3 PUBLIC SQLITE_ENABLE_STAT4)
+endif (SQLITE_ENABLE_STAT4)
+
 if (SQLITE_ENABLE_JSON1)
     # Enable JSON1 extension when building sqlite3
     # See more here: https://www.sqlite.org/json1.html
