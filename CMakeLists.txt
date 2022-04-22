@@ -234,6 +234,18 @@ if (SQLITECPP_USE_ASAN)
     endif ()
 endif (SQLITECPP_USE_ASAN)
 
+option(SQLITECPP_INTERPROCEDURAL_OPTIMIZATION "Use interprocedural optimization (flto)." OFF)
+if (SQLITECPP_INTERPROCEDURAL_OPTIMIZATION)
+    include(CheckIPOSupported)
+    check_ipo_supported(RESULT result)
+    if (NOT result)
+        set(SQLITECPP_INTERPROCEDURAL_OPTIMIZATION OFF)
+        message(WARNING "Interprocedural optimization not supported - disabling")
+    else ()
+        set_property(TARGET SQLiteCpp PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+    endif ()
+endif ()
+
 if (SQLITECPP_USE_GCOV)
     # Prevent the compiler from removing the unused inline functions so that they get tracked as "non-covered"
     set_target_properties(SQLiteCpp PROPERTIES COMPILE_FLAGS "-fkeep-inline-functions -fkeep-static-functions")
@@ -457,10 +469,3 @@ endif (SQLITECPP_BUILD_TESTS)
 
 # API version for SQLiteCpp shared library.
 set_property(TARGET SQLiteCpp PROPERTY SOVERSION 0)
-
-include(CheckIPOSupported)
-check_ipo_supported(RESULT result)
-if (result AND (CMAKE_BUILD_TYPE STREQUAL Release))
-# if (CMAKE_BUILD_TYPE STREQUAL Release)
-    set_property(TARGET SQLiteCpp PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
-endif ()
