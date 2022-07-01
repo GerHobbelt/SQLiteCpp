@@ -7,7 +7,7 @@
 cmake_minimum_required(VERSION 3.9) # for "CMAKE_CXX_STANDARD" version
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake") # custom CMake modules like FindSQLiteCpp
 # This is fork of version: 3.1.1
-project(SQLiteCpp VERSION 3.38.2)
+project(SQLiteCpp VERSION 3.39.0)
 
 # SQLiteC++ 3.x requires C++11 features
 if (NOT CMAKE_CXX_STANDARD)
