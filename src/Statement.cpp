@@ -3,7 +3,7 @@
  * @ingroup SQLiteCpp
  * @brief   A prepared SQLite Statement is a compiled SQL query ready to be executed, pointing to a row of result.
  *
- * Copyright (c) 2012-2021 Sebastien Rombauts (sebastien.rombauts@gmail.com)
+ * Copyright (c) 2012-2022 Sebastien Rombauts (sebastien.rombauts@gmail.com)
  *
  * Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
  * or copy at http://opensource.org/licenses/MIT)
@@ -288,7 +288,7 @@ int Statement::getColumnIndex(const char* apName) const
     return iIndex->second;
 }
 
-const char * Statement::getColumnDeclaredType(const int aIndex) const
+const char* Statement::getColumnDeclaredType(const int aIndex) const
 {
     checkIndex(aIndex);
     const char * result = sqlite3_column_decltype(getPreparedStatement(), aIndex);

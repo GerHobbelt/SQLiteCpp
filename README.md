@@ -22,7 +22,7 @@ with a few intuitive and well documented C++ classes.
 
 ### License:
 
-Copyright (c) 2012-2021 Sébastien Rombauts (sebastien.rombauts@gmail.com)
+Copyright (c) 2012-2022 Sébastien Rombauts (sebastien.rombauts@gmail.com)
 <a href="https://www.paypal.me/SRombauts" title="Pay Me a Beer! Donate with PayPal :)"><img src="https://www.paypalobjects.com/webstatic/paypalme/images/pp_logo_small.png" width="118"></a>
 
 Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
@@ -127,6 +127,21 @@ cd SQLiteCpp
 git submodule init
 git submodule update
 ```
+
+### Installing SQLiteCpp (vcpkg)
+
+Alternatively, you can build and install SQLiteCpp using [vcpkg](https://github.com/Microsoft/vcpkg/) dependency manager:
+
+```bash or powershell
+git clone https://github.com/Microsoft/vcpkg.git
+cd vcpkg
+./bootstrap-vcpkg.sh
+./vcpkg integrate install
+./vcpkg install sqlitecpp
+```
+
+The SQLiteCpp port in vcpkg is kept up to date by Microsoft team members and community contributors. If the version is out of date, please [create an issue or pull request](https://github.com/Microsoft/vcpkg) on the vcpkg repository.
+
 
 #### Using SQLiteCpp on a system-wide installation
 

@@ -3,7 +3,7 @@
  * @ingroup SQLiteCpp
  * @brief   Encapsulation of a Column in a row of the result pointed by the prepared SQLite::Statement.
  *
- * Copyright (c) 2012-2021 Sebastien Rombauts (sebastien.rombauts@gmail.com)
+ * Copyright (c) 2012-2022 Sebastien Rombauts (sebastien.rombauts@gmail.com)
  *
  * Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
  * or copy at http://opensource.org/licenses/MIT)
@@ -54,10 +54,6 @@ public:
      * @param[in] aIndex    Index of the column in the row of result, starting at 0
      */
     explicit Column(const Statement::TStatementPtr& aStmtPtr, int aIndex);
-
-    // default destructor: the finalization will be done by the destructor of the last shared pointer
-    // default copy constructor and assignment operator are perfectly suited :
-    // they copy the Statement::Ptr which in turn increments the reference counter.
 
     /**
      * @brief Return a pointer to the named assigned to this result column (potentially aliased)
