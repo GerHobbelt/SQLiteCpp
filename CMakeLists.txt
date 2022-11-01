@@ -20,7 +20,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 message (STATUS "CMake version: ${CMAKE_VERSION}")
 message (STATUS "Project version: ${PROJECT_VERSION}")
 
-option(SQLITECPP_USE_STATIC_RUNTIME "Use MSVC static runtime (default for internal googletest)." ON)
+option(SQLITECPP_BUILD_TESTS "Build and run tests." OFF)
 
 # Define useful variables to handle OS differences:
 if (WIN32)
@@ -36,6 +36,7 @@ if (MSVC)
     # disable Visual Studio warnings for fopen() used in the example
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
     # Flags for linking with multithread static C++ runtime, required by internal googletest
+    option(SQLITECPP_USE_STATIC_RUNTIME "Use MSVC static runtime (default for internal googletest)." ${SQLITECPP_BUILD_TESTS})
     if (SQLITECPP_USE_STATIC_RUNTIME)
         message(STATUS "Linking against multithread static C++ runtime")
         set(CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE} /MT")
@@ -244,7 +245,7 @@ if (SQLITECPP_INTERNAL_SQLITE)
     option(SQLITE_ENABLE_JSON1 "Enable JSON1 extension when building internal sqlite3 library." ON)
     # build the SQLite3 C library (for ease of use/compatibility) versus Linux sqlite3-dev package
     add_subdirectory(sqlite3)
-    target_link_libraries(SQLiteCpp PUBLIC sqlite3)
+    target_link_libraries(SQLiteCpp PUBLIC SQLite::SQLite3)
 else (SQLITECPP_INTERNAL_SQLITE)
     # When using the SQLite codec, we need to link against the sqlcipher lib & include <sqlcipher/sqlite3.h>
     # So this gets the lib & header, and links/includes everything
@@ -303,8 +304,6 @@ endif (UNIX)
 # Set includes for target and transitive downstream targets
 
 target_include_directories(SQLiteCpp
-  PRIVATE
-    $<$<BOOL:${SQLITECPP_INTERNAL_SQLITE}>:${CMAKE_CURRENT_SOURCE_DIR}/sqlite3>
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include/>)
@@ -389,9 +388,6 @@ if (SQLITECPP_BUILD_EXAMPLES)
     # add the basic example executable
     add_executable(SQLiteCpp_example1 ${SQLITECPP_EXAMPLES})
     target_link_libraries(SQLiteCpp_example1 SQLiteCpp)
-    target_include_directories(SQLiteCpp_example1 PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-        $<$<BOOL:${SQLITECPP_INTERNAL_SQLITE}>:${CMAKE_CURRENT_SOURCE_DIR}/sqlite3>)
     if (MSYS OR MINGW)
         target_link_libraries(SQLiteCpp_example1 ssp)
     endif ()
@@ -399,14 +395,10 @@ else (SQLITECPP_BUILD_EXAMPLES)
     message(STATUS "SQLITECPP_BUILD_EXAMPLES OFF")
 endif (SQLITECPP_BUILD_EXAMPLES)
 
-option(SQLITECPP_BUILD_TESTS "Build and run tests." OFF)
 if (SQLITECPP_BUILD_TESTS)
     # add the unit test executable
     add_executable(SQLiteCpp_tests ${SQLITECPP_TESTS})
     target_link_libraries(SQLiteCpp_tests SQLiteCpp)
-    target_include_directories(SQLiteCpp_tests PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-        $<$<BOOL:${SQLITECPP_INTERNAL_SQLITE}>:${CMAKE_CURRENT_SOURCE_DIR}/sqlite3>)
 
     find_package(GTest)
     if (GTEST_FOUND)
