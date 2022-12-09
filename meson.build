@@ -3,7 +3,7 @@ project(
     # SQLiteCpp requires C++11 support
     default_options: ['cpp_std=c++11'],
     license: 'MIT',
-    version: '3.1.1',
+    version: '3.2.0',
 )
 
 cxx = meson.get_compiler('cpp')
@@ -61,10 +61,7 @@ sqlitecpp_test_srcs = [
     'tests/Exception_test.cpp',
     'tests/ExecuteMany_test.cpp',
 ]
-sqlitecpp_test_args = [
-    # do not use ambiguous overloads by default
-    '-DNON_AMBIGOUS_OVERLOAD'
-]
+sqlitecpp_test_args = []
 
 ## samples
 
@@ -192,7 +189,7 @@ if get_option('SQLITECPP_BUILD_TESTS')
     gtest_dep = dependency(
                 'gtest',
                 main : true,
-                fallback: ['gtest', 'gtest_dep'])
+                fallback: ['gtest', 'gtest_main_dep'])
     sqlitecpp_test_dependencies = [
         gtest_dep,
         sqlitecpp_static_dep,
