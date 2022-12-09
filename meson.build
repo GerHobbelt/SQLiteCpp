@@ -35,6 +35,7 @@ sqlitecpp_srcs = [
     'src/Column.cpp',
     'src/Database.cpp',
     'src/Exception.cpp',
+    'src/Savepoint.cpp',
     'src/Statement.cpp',
     'src/Transaction.cpp',
 ]
@@ -54,6 +55,7 @@ sqlitecpp_opts = []
 sqlitecpp_test_srcs = [
     'tests/Column_test.cpp',
     'tests/Database_test.cpp',
+    'tests/Savepoint_test.cpp',
     'tests/Statement_test.cpp',
     'tests/Backup_test.cpp',
     'tests/Transaction_test.cpp',
@@ -65,8 +67,11 @@ sqlitecpp_test_args = []
 
 ## samples
 
-sqlitecpp_sample_srcs = [
+sqlitecpp_sample1_srcs = [
     'examples/example1/main.cpp',
+]
+sqlitecpp_sample2_srcs = [
+    'examples/example2/src/main.cpp',
 ]
 
 # if not using MSVC we need to add this compiler arguments
@@ -159,18 +164,9 @@ if get_option('SQLITECPP_BUILD_TESTS')
         # static libraries do not have a version
 endif
 
-install_headers(
-    'include/SQLiteCpp/SQLiteCpp.h',
-    'include/SQLiteCpp/Assertion.h',
-    'include/SQLiteCpp/Backup.h',
-    'include/SQLiteCpp/Column.h',
-    'include/SQLiteCpp/Database.h',
-    'include/SQLiteCpp/Exception.h',
-    'include/SQLiteCpp/Statement.h',
-    'include/SQLiteCpp/Transaction.h',
-    'include/SQLiteCpp/VariadicBind.h',
-    'include/SQLiteCpp/ExecuteMany.h',
-)
+install_subdir(
+    'include/SQliteCpp',
+    install_dir: get_option('includedir'))
 
 sqlitecpp_dep = declare_dependency(
     include_directories: sqlitecpp_incl,
@@ -207,12 +203,19 @@ if get_option('SQLITECPP_BUILD_TESTS')
     test('sqlitecpp unit tests', testexe, args: test_args)
 endif
 if get_option('SQLITECPP_BUILD_EXAMPLES')
-    ## demo executable
-    sqlitecpp_demo_exe = executable('SQLITECPP_sample_demo',
-                            sqlitecpp_sample_srcs,
+    ## demo 1 executable
+    sqlitecpp_demo1_exe = executable('SQLITECPP_sample_demo1',
+                            sqlitecpp_sample1_srcs,
                             dependencies: sqlitecpp_dep,
                             # override the default options
                             override_options: sqlitecpp_opts,)
+    ## demo 2 executable
+    sqlitecpp_demo1_exe = executable('SQLITECPP_sample_demo2',
+                            sqlitecpp_sample2_srcs,
+                            dependencies: sqlitecpp_dep,
+                            # override the default options
+                            override_options: sqlitecpp_opts,)
+                    
 endif
 
 pkgconfig = import('pkgconfig')
