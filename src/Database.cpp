@@ -37,7 +37,8 @@ const int   OPEN_NOMUTEX      = SQLITE_OPEN_NOMUTEX;
 const int   OPEN_FULLMUTEX    = SQLITE_OPEN_FULLMUTEX;
 const int   OPEN_SHAREDCACHE  = SQLITE_OPEN_SHAREDCACHE;
 const int   OPEN_PRIVATECACHE = SQLITE_OPEN_PRIVATECACHE;
-#if SQLITE_VERSION_NUMBER >= 3031000
+// check if sqlite version is >= 3.31.0 and SQLITE_OPEN_NOFOLLOW is defined
+#if SQLITE_VERSION_NUMBER >= 3031000 && defined(SQLITE_OPEN_NOFOLLOW)
 const int   OPEN_NOFOLLOW     = SQLITE_OPEN_NOFOLLOW;
 #else
 const int   OPEN_NOFOLLOW     = 0;
@@ -92,7 +93,7 @@ void Database::Deleter::operator()(sqlite3* apSQLite)
     SQLITECPP_ASSERT(SQLITE_OK == ret, "database is locked");  // See SQLITECPP_ENABLE_ASSERT_HANDLER
 }
 
-//Set a busy handler that sleeps for a specified amount of time when a table is locked.
+// Set a busy handler that sleeps for a specified amount of time when a table is locked.
 void Database::setBusyTimeout(const int aBusyTimeoutMs)
 {
     const int ret = sqlite3_busy_timeout(getHandle(), aBusyTimeoutMs);
