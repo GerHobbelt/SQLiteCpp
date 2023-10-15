@@ -17,6 +17,16 @@ endif ()
 message(STATUS "Using c++ standard c++${CMAKE_CXX_STANDARD}")
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(BUILD_SHARED_LIBS)
+    if(WIN32)
+        message("defining SQLITECPP_COMPILE_DLL")
+        add_definitions("-DSQLITECPP_COMPILE_DLL")
+        if(SQLITECPP_DLL_EXPORT)
+        add_definitions("-DSQLITECPP_DLL_EXPORT")
+        endif()
+    endif()
+endif()
+
 message (STATUS "CMake version: ${CMAKE_VERSION}")
 message (STATUS "Project version: ${PROJECT_VERSION}")
 
@@ -303,6 +313,13 @@ if (SQLITECPP_DISABLE_STD_FILESYSTEM)
     message (STATUS "Disabling std::filesystem support")
     target_compile_definitions(SQLiteCpp PUBLIC SQLITECPP_DISABLE_STD_FILESYSTEM)
 endif (SQLITECPP_DISABLE_STD_FILESYSTEM)
+
+## disable the optional support for sqlite3_expanded_sql (from sqlite3 3.14.0)
+option(SQLITECPP_DISABLE_EXPANDED_SQL "Disable the use of sqlite3_expanded_sql in SQLiteCpp." OFF)
+if (SQLITECPP_DISABLE_EXPANDED_SQL)
+    message (STATUS "Disabling sqlite3_expanded_sql support")
+    target_compile_definitions(SQLiteCpp PUBLIC SQLITECPP_DISABLE_EXPANDED_SQL)
+endif (SQLITECPP_DISABLE_EXPANDED_SQL)
 
 # Link target with pthread and dl for Unix
 if (UNIX)
