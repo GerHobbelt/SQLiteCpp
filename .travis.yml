@@ -15,6 +15,7 @@ env:
     - INTERNAL_SQLITE=ON
     - VALGRIND=OFF
     - TESTS=ON
+    - SHARED_LIBS=OFF
 
 # Build variants (should test a reasonable number of combination of CMake options)
 jobs:
@@ -24,7 +25,17 @@ jobs:
     # GCC on Linux
     ##########################################################################
 
-    # Coverity static code analysis
+    # GCC 11.2.0 (Ubuntu Jammy 22.04)
+    - dist: jammy
+      env:
+        - cc=gcc cxx=g++
+
+    # Clang 9.3.0 (Ubuntu Focal 20.04)
+    - dist: focal
+      env:
+        - cc=gcc cxx=g++
+
+    # Coverity static code analysis (Ubuntu Bionic 18.04)
     - dist: bionic
       env:
         - COVERITY_SCAN_PROJECT_NAME=SRombauts/SQLiteCpp
@@ -35,38 +46,44 @@ jobs:
         # Encrypted COVERITY_SCAN_TOKEN, created via the "travis encrypt" command using the project repo's public key
         - secure: "Qm4d8NEDPBtYZCYav46uPEvDCtaRsjLXlkVS+C+WCJAPcwXCGkrr96wEi7RWcq2xD86QCh0XiqaPT+xdUmlohOYIovRhaaBmZ1lwIJ4GsG/ZR6xoFr3DYsZ3o4GyXk2vNXNxEl82AC+Xs6e6gkLOV9XRkBcjpVIvoIXgNlKWeGY="
 
-    # GCC 7.4.0 Debug build with GCov for coverage build
+    # GCC 7.4.0 Debug build with GCov for coverage build (Ubuntu Bionic 18.04)
     - dist: bionic
       env:
         - cc=gcc cxx=g++
         - GCOV=ON
         - COVERALLS=ON
 
-    # GCC 7.4.0 Debug build with Valgrind instead of Address Sanitizer
+    # GCC 7.4.0 Debug build with Valgrind instead of Address Sanitizer (Ubuntu Bionic 18.04)
     - dist: bionic
       env:
         - cc=gcc cxx=g++
         - ASAN=OFF
         - VALGRIND=ON
 
-    # GCC 7.4.0 Release build
+    # GCC 7.4.0 Release build (Ubuntu Bionic 18.04)
     - dist: bionic
       env:
         - cc=gcc cxx=g++
         - BUILD_TYPE=Release
 
-    # GCC 7.4.0 test linking with libsqlite3-dev package
+    # GCC 7.4.0 Shared Libs (Ubuntu Bionic 18.04)
+    - dist: bionic
+      env:
+        - cc=gcc cxx=g++
+        - SHARED_LIBS=ON
+
+    # GCC 7.4.0 test linking with libsqlite3-dev package (Ubuntu Bionic 18.04)
     - dist: bionic
       env:
         - cc=gcc cxx=g++
         - INTERNAL_SQLITE=OFF
 
-    # GCC 5.4.0
+    # GCC 5.4.0 (Ubuntu Xenial 16.04)
     - dist: xenial
       env:
         - cc=gcc cxx=g++
 
-    # GCC 4.8.4
+    # GCC 4.8.4 (Ubuntu Trusty 14.04)
     - dist: trusty
       env:
         - cc=gcc cxx=g++
@@ -76,17 +93,27 @@ jobs:
     # Clang on Linux
     ##########################################################################
 
-    # Clang 7.0.0
+    # Clang 7.0.0 (Ubuntu Jammy 22.04)
+    - dist: jammy
+      env:
+        - cc=clang cxx=clang++
+
+    # Clang 7.0.0 (Ubuntu Focal 20.04)
+    - dist: focal
+      env:
+        - cc=clang cxx=clang++
+
+    # Clang 7.0.0 (Ubuntu Bionic 18.04)
     - dist: bionic
       env:
         - cc=clang cxx=clang++
 
-    # Clang 7.0.0
+    # Clang 7.0.0 (Ubuntu Xenial 16.04)
     - dist: xenial
       env:
         - cc=clang cxx=clang++
 
-    # Clang 5.0.0
+    # Clang 5.0.0 (Ubuntu Trusty 14.04)
     - dist: trusty
       env:
         - cc=clang cxx=clang++
@@ -124,7 +151,7 @@ before_install:
 before_script:
   - mkdir build
   - cd build
-  - cmake -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DSQLITECPP_INTERNAL_SQLITE=$INTERNAL_SQLITE -DSQLITECPP_USE_ASAN=$ASAN -DSQLITECPP_USE_GCOV=$GCOV -DSQLITECPP_BUILD_EXAMPLES=$TESTS -DSQLITECPP_BUILD_TESTS=$TESTS ..
+  - cmake -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBUILD_SHARED_LIBS=$SHARED_LIBS -DSQLITECPP_INTERNAL_SQLITE=$INTERNAL_SQLITE -DSQLITECPP_USE_ASAN=$ASAN -DSQLITECPP_USE_GCOV=$GCOV -DSQLITECPP_BUILD_EXAMPLES=$TESTS -DSQLITECPP_BUILD_TESTS=$TESTS ..
 
 # build examples, and run tests (ie make & make test)
 script:
