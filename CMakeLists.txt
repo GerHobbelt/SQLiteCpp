@@ -4,7 +4,7 @@
 #
 # Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
 # or copy at http://opensource.org/licenses/MIT)
-cmake_minimum_required(VERSION 3.1) # for "CMAKE_CXX_STANDARD" version
+cmake_minimum_required(VERSION 3.5)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake") # custom CMake modules like FindSQLiteCpp
 project(SQLiteCpp VERSION 3.3.0)
 
@@ -215,7 +215,7 @@ endif (SQLITE_USE_LEGACY_STRUCT)
 
 if(BUILD_SHARED_LIBS)
     if(WIN32)
-        add_definitions("-DSQLITECPP_COMPILE_DLL")
+        target_compile_definitions(SQLiteCpp PUBLIC "SQLITECPP_COMPILE_DLL")
         target_compile_definitions(SQLiteCpp PRIVATE "SQLITECPP_DLL_EXPORT")
     endif()
 endif()
