@@ -15,6 +15,7 @@ jobs:
             os: windows-latest,
             cc: "cl", cxx: "cl",
             extra_path: "",
+            requires_msvc: true,
           }
         - {
             name: "Windows Latest MinGW",
@@ -49,8 +50,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: submodule
-      run: git submodule update --init --recursive
+    # use msvc-dev-cmd to setup the environment for MSVC if needed
+    - name: setup MSVC
+      if: matrix.config.requires_msvc
+      uses: ilammy/msvc-dev-cmd@v1
     - name: extra_path
       shell: bash
       run: echo "${{matrix.config.extra_path}}" >> $GITHUB_PATH
