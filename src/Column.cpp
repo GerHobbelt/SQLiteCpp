@@ -14,15 +14,14 @@
 
 #include <iostream>
 
-
 namespace SQLite
 {
 
-SQLITECPP_API const int INTEGER   = SQLITE_INTEGER;
-SQLITECPP_API const int FLOAT     = SQLITE_FLOAT;
-SQLITECPP_API const int TEXT      = SQLITE_TEXT;
-SQLITECPP_API const int BLOB      = SQLITE_BLOB;
-SQLITECPP_API const int Null      = SQLITE_NULL;
+const int INTEGER   = SQLITE_INTEGER;
+const int FLOAT     = SQLITE_FLOAT;
+const int TEXT      = SQLITE_TEXT;
+const int BLOB      = SQLITE_BLOB;
+const int Null      = SQLITE_NULL;
 
 
 // Encapsulation of a Column in a row of the result pointed by the prepared Statement.
@@ -120,6 +119,5 @@ std::ostream& operator<<(std::ostream& aStream, const Column& aColumn)
     aStream.write(aColumn.getText(), aColumn.getBytes());
     return aStream;
 }
-
 
 }  // namespace SQLite
