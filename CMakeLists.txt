@@ -22,6 +22,11 @@ message (STATUS "Project version: ${PROJECT_VERSION}")
 
 option(SQLITECPP_BUILD_TESTS "Build and run tests." OFF)
 
+# BUILD_SHARED_LIBS is a standard CMake variable, but we declare it here to make it prominent
+option(BUILD_SHARED_LIBS "Build shared libraries (DLLs)." OFF)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 # Define useful variables to handle OS differences:
 if (WIN32)
     set(DEV_NULL                "NUL")
@@ -230,8 +235,9 @@ if (SQLITE_USE_LEGACY_STRUCT)
     target_compile_definitions(SQLiteCpp PUBLIC SQLITE_USE_LEGACY_STRUCT)
 endif (SQLITE_USE_LEGACY_STRUCT)
 
-if(BUILD_SHARED_LIBS)
-    if(WIN32)
+if (BUILD_SHARED_LIBS)
+    if (WIN32)
+        message(STATUS "Build shared libraries (DLLs).")
         target_compile_definitions(SQLiteCpp PUBLIC "SQLITECPP_COMPILE_DLL")
         target_compile_definitions(SQLiteCpp PRIVATE "SQLITECPP_DLL_EXPORT")
     endif()
@@ -459,6 +465,8 @@ if (SQLITECPP_BUILD_TESTS)
         if (NOT EXISTS "${PROJECT_SOURCE_DIR}/googletest/CMakeLists.txt")
             message(FATAL_ERROR "Missing 'googletest' submodule! Either use 'git submodule init' and 'git submodule update' to get googletest according to the README, or deactivate unit tests with -DSQLITECPP_BUILD_TESTS=OFF")
         endif ()
+        # don't build the googlemock subproject, only the main googletest library
+        set(BUILD_GMOCK OFF CACHE BOOL "Builds the googlemock subproject")
         add_subdirectory(googletest)
         include_directories("${PROJECT_SOURCE_DIR}/googletest/googletest/include")
 
@@ -479,11 +487,11 @@ if (SQLITECPP_BUILD_TESTS)
     enable_testing()
 
     # does the tests pass?
-    add_test(UnitTests SQLiteCpp_tests)
+    add_test(UnitTests bin/SQLiteCpp_tests)
 
     if (SQLITECPP_BUILD_EXAMPLES)
         # does the example1 runs successfully?
-        add_test(Example1Run SQLiteCpp_example1)
+        add_test(Example1Run bin/SQLiteCpp_example1)
     endif (SQLITECPP_BUILD_EXAMPLES)
 else (SQLITECPP_BUILD_TESTS)
     message(STATUS "SQLITECPP_BUILD_TESTS OFF")
