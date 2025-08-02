@@ -43,14 +43,6 @@ jobs:
             extra_path: "",
           }
         - {
-            name: "Ubuntu 20.04 GCC",
-            os: ubuntu-20.04,
-            generator: "Unix Makefiles",
-            build_type: "Debug",
-            cc: "gcc", cxx: "g++",
-            extra_path: "",
-          }
-        - {
             name: "macOS Latest Clang",
             os: macos-latest,
             generator: "Unix Makefiles",
