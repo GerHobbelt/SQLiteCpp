@@ -40,7 +40,7 @@ __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_13_0
         #undef SQLITECPP_HAVE_STD_FILESYSTEM
     #endif
     #if !__has_include(<experimental/filesystem>)
-        #undef SQLITECPP_HAVE_EXPERIMENTAL_FILESYSTEM
+        #undef SQLITECPP_HAVE_STD_EXPERIMENTAL_FILESYSTEM
     #endif
 #endif
 
