@@ -7,7 +7,6 @@ SQLiteC++
 [![Meson](https://github.com/SRombauts/SQLiteCpp/actions/workflows/meson.yml/badge.svg?branch=master)](https://github.com/SRombauts/SQLiteCpp/actions/workflows/meson.yml "Meson build status")
 [![Quality](https://github.com/SRombauts/SQLiteCpp/actions/workflows/quality.yml/badge.svg?branch=master)](https://github.com/SRombauts/SQLiteCpp/actions/workflows/quality.yml "Quality checks")
 [![CodeQL](https://github.com/SRombauts/SQLiteCpp/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/SRombauts/SQLiteCpp/actions/workflows/codeql.yml "CodeQL analysis")
-[![AppVeyor Windows Build status](https://ci.appveyor.com/api/projects/status/github/SRombauts/SQLiteCpp?svg=true)](https://ci.appveyor.com/project/SbastienRombauts/SQLiteCpp "AppVeyor Windows Build status")
 [![Coveralls](https://img.shields.io/coveralls/github/SRombauts/SQLiteCpp/master.svg)](https://coveralls.io/github/SRombauts/SQLiteCpp "Coveralls test coverage")
 [![Coverity](https://img.shields.io/coverity/scan/14508.svg)](https://scan.coverity.com/projects/srombauts-sqlitecpp "Coverity Scan Build Status")
 [![Join the chat at https://gitter.im/SRombauts/SQLiteCpp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/SRombauts/SQLiteCpp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -69,18 +68,15 @@ and then is always valid until destroyed.
 
 Now requires a C++11 compiler. Use branch [sqlitecpp-2.x](https://github.com/SRombauts/SQLiteCpp/tree/sqlitecpp-2.x) for latest pre-C++11 developments.
 
-Developments and tests are done under the following OSs:
-- Ubuntu 14.04, 16.04 and 18.04 (Travis CI and Github Actions)
-- Windows 10, and Windows Server 2012 R2, Windows Server 2016, Windows Server 2022, Windows Server 2025 (AppVeyor and Github Actions)
-- MacOS 10.11 and 11.7 (Travis CI and Github Actions)
-- Valgrind memcheck tool
+The continuous integration builds and tests on:
 
-And the following IDEs/Compilers
-- GCC 4.8.4, 5.3.0, 7.1.1 and latest eg 9.4 (C++11, C++14, C++17)
-- Clang 5 and 7 (Travis CI)
-- AppleClang 8, 9 and 13 (Travis CI and Github Actions)
-- Xcode 8 & 9 (Travis CI)
-- Visual Studio Community/Entreprise 2026, 2022, 2019, 2017, and 2015 (AppVeyor and Github Actions)
+- Ubuntu 22.04 and 24.04, plus the current Ubuntu GitHub Actions runner
+- the current Windows GitHub Actions runner, plus Visual Studio 2022 Release builds for Win32/x86 with shared
+  and static libraries
+- the current macOS GitHub Actions runner
+
+The build matrices cover GCC, Clang, AppleClang, MinGW, and MSVC. The core library requires C++11;
+selected headers use C++14 features as documented below.
 
 ### Dependencies
 
@@ -289,14 +285,12 @@ These files help AI assistants understand SQLiteCpp's coding standards, architec
 
 ### Continuous Integration
 
-This project is continuously tested under Ubuntu Linux with the gcc and clang compilers
-using the Travis CI community service with the above CMake building and testing procedure.
-It is also tested in the same way under Windows Server 2012 R2 with Visual Studio 2013 compiler
-using the AppVeyor continuous integration service.
+GitHub Actions builds and tests the CMake and Meson configurations on Linux, Windows, and macOS.
+Separate workflows run AddressSanitizer, UndefinedBehaviorSanitizer, cppcheck, CodeQL, coverage, and Coverity Scan.
+The CMake workflow also runs Visual Studio 2022 Release builds for Win32/x86 with shared and static libraries.
 
 Detailed results can be seen online:
- - [https://travis-ci.org/SRombauts/SQLiteCpp](https://travis-ci.org/SRombauts/SQLiteCpp)
- - [https://ci.appveyor.com/project/SbastienRombauts/SQLiteCpp](https://ci.appveyor.com/project/SbastienRombauts/SQLiteCpp)
+ - [GitHub Actions](https://github.com/SRombauts/SQLiteCpp/actions)
 
 ### Thread-safety
 

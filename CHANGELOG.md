@@ -309,6 +309,7 @@ Version 3.4.0 - 2026 ???
 - Fix Column::operator<< to stream the exact column bytes via getString() (#556)
 - Restore the Coverity Scan static analysis as a GitHub Actions workflow, replacing the old Travis CI job
 - Fix Database::getHeaderInfo() signed-shift UB and use fixed-width types for the Header struct (#558)
+- Restore SQLite::Header 3.x ABI compatibility while keeping fixed-width header parsing (#575)
 - Fix Savepoint destructor to catch all exceptions and track rollback state to avoid std::terminate (#559)
 - Fix Transaction destructor to catch all exceptions to avoid std::terminate (#559)
 - Fix the Meson build when the SQLITECPP_DISABLE_STD_FILESYSTEM option is enabled (#560)
@@ -321,3 +322,7 @@ Version 3.4.0 - 2026 ???
 - Add ASan, UBSan, and cppcheck quality gates (#568)
 - Add CodeQL security and quality analysis (#569)
 - Refresh the README CI badges (#570)
+- Allow Database encryption keys to be supplied as binary buffers (#571)
+- Remove obsolete Travis CI configuration and active references (#572)
+- Remove AppVeyor and retain Visual Studio 2022 Release Win32/x86 coverage in GitHub Actions (#573)
+- Add C++11 & C++17 standard tests (#574)

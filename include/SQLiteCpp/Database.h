@@ -64,6 +64,7 @@ namespace filesystem = experimental::filesystem;
 
 #endif // SQLITECPP_HAVE_STD_EXPERIMENTAL_FILESYSTEM
 
+#include <cstddef>
 #include <cstdint>
 #include <memory>
 #include <string.h>
@@ -121,28 +122,28 @@ SQLITECPP_API int   getLibVersionNumber() noexcept;
 // Public structure for representing all fields contained within the SQLite header.
 // Official documentation for fields: https://www.sqlite.org/fileformat.html#the_database_header
 struct Header {
-    std::uint8_t headerStr[16];
-    std::uint32_t pageSizeBytes;
-    std::uint8_t fileFormatWriteVersion;
-    std::uint8_t fileFormatReadVersion;
-    std::uint8_t reservedSpaceBytes;
-    std::uint8_t maxEmbeddedPayloadFrac;
-    std::uint8_t minEmbeddedPayloadFrac;
-    std::uint8_t leafPayloadFrac;
-    std::uint32_t fileChangeCounter;
-    std::uint32_t databaseSizePages;
-    std::uint32_t firstFreelistTrunkPage;
-    std::uint32_t totalFreelistPages;
-    std::uint32_t schemaCookie;
-    std::uint32_t schemaFormatNumber;
-    std::uint32_t defaultPageCacheSizeBytes;
-    std::uint32_t largestBTreePageNumber;
-    std::uint32_t databaseTextEncoding;
-    std::uint32_t userVersion;
-    std::uint32_t incrementalVaccumMode;
-    std::uint32_t applicationId;
-    std::uint32_t versionValidFor;
-    std::uint32_t sqliteVersion;
+    unsigned char headerStr[16];
+    unsigned int pageSizeBytes;
+    unsigned char fileFormatWriteVersion;
+    unsigned char fileFormatReadVersion;
+    unsigned char reservedSpaceBytes;
+    unsigned char maxEmbeddedPayloadFrac;
+    unsigned char minEmbeddedPayloadFrac;
+    unsigned char leafPayloadFrac;
+    unsigned long fileChangeCounter;
+    unsigned long databaseSizePages;
+    unsigned long firstFreelistTrunkPage;
+    unsigned long totalFreelistPages;
+    unsigned long schemaCookie;
+    unsigned long schemaFormatNumber;
+    unsigned long defaultPageCacheSizeBytes;
+    unsigned long largestBTreePageNumber;
+    unsigned long databaseTextEncoding;
+    unsigned long userVersion;
+    unsigned long incrementalVaccumMode;
+    unsigned long applicationId;
+    unsigned long versionValidFor;
+    unsigned long sqliteVersion;
 };
 
 /**
@@ -537,6 +538,19 @@ public:
     void key(const std::string& aKey) const;
 
     /**
+    * @brief Set the key for the current sqlite database instance from a binary buffer.
+    *
+    *  The explicit size supports arbitrary binary data and lets callers avoid storing sensitive keys in a
+    *  std::string. The codec controls its internal key storage.
+    *
+    * @param[in] apKey  Buffer containing the key to decode/encode the database (nullptr if aSize is zero)
+    * @param[in] aSize  Size of the key buffer in bytes
+    *
+    * @throw SQLite::Exception in case of error
+    */
+    void key(const void* apKey, std::size_t aSize) const;
+
+    /**
     * @brief Reset the key for the current sqlite database instance.
     *
     *  This is the equivalent of the sqlite3_rekey call and should thus be called
@@ -551,6 +565,20 @@ public:
     * @throw SQLite::Exception in case of error
     */
     void rekey(const std::string& aNewKey) const;
+
+    /**
+    * @brief Reset the key for the current sqlite database instance from a binary buffer.
+    *
+    *  The explicit size supports arbitrary binary data and lets callers avoid storing sensitive keys in a
+    *  std::string. The codec controls its internal key storage. Pass a zero-size buffer to decrypt the
+    *  database.
+    *
+    * @param[in] apNewKey  Buffer containing the new key to encode the database (nullptr if aSize is zero)
+    * @param[in] aSize     Size of the new key buffer in bytes
+    *
+    * @throw SQLite::Exception in case of error
+    */
+    void rekey(const void* apNewKey, std::size_t aSize) const;
 
     /**
     * @brief Test if a file contains an unencrypted database.
