@@ -291,7 +291,7 @@ Version 3.3.3 - 2025 May 20
 
 Version 3.4.0 - 2026 ???
 
-- Update SQLite from 3.49.2 to 3.53.3 (2026-06-26) (#526) (#538) (#548) (#561)
+- Update SQLite from 3.49.2 to 3.53.4 (2026-07-24) (#526) (#538) (#548) (#561) (#566)
 - Add a `SQLITECPP_install` CMake option to make the install targets optional (#512)
 - Generalize the CMake SQLite and key API to ease use of SQLite3 Multiple Ciphers (#532)
 - Set `cmake_minimum_required` policy max to support CMake 4.0 (#519)
@@ -307,7 +307,6 @@ Version 3.4.0 - 2026 ???
 - Fix Database::isUnencrypted() to compare the full 16-byte header in binary mode (#553)
 - Fix execute_many() to clear stale bindings between parameter sets (#554)
 - Fix Column::operator<< to stream the exact column bytes via getString() (#556)
-- Fix large `std::string` binding sizes (#563)
 - Restore the Coverity Scan static analysis as a GitHub Actions workflow, replacing the old Travis CI job
 - Fix Database::getHeaderInfo() signed-shift UB and use fixed-width types for the Header struct (#558)
 - Fix Savepoint destructor to catch all exceptions and track rollback state to avoid std::terminate (#559)
@@ -315,3 +314,10 @@ Version 3.4.0 - 2026 ???
 - Fix the Meson build when the SQLITECPP_DISABLE_STD_FILESYSTEM option is enabled (#560)
 - Add Statement::RowIterator to support range-based for loops over query results (#181)
 - Add unit tests for Statement::RowIterator to fix coverage regression (#562)
+- Fix large `std::string` binding sizes (#563)
+- Add 64-bit BLOB binding methods (#564)
+- Limit AppVeyor to Visual Studio 2022 and 2019 Release builds on master and pull requests (#565)
+- Fix GCov linking in shared-library builds (#567)
+- Add ASan, UBSan, and cppcheck quality gates (#568)
+- Add CodeQL security and quality analysis (#569)
+- Refresh the README CI badges (#570)
