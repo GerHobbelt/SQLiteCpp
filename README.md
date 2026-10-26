@@ -6,7 +6,7 @@ SQLiteC++
 [![Travis CI Linux Build Status](https://travis-ci.org/SRombauts/SQLiteCpp.svg?branch=master)](https://travis-ci.org/SRombauts/SQLiteCpp "Travis CI Linux Build Status")
 [![AppVeyor Windows Build status](https://ci.appveyor.com/api/projects/status/github/SRombauts/SQLiteCpp?svg=true)](https://ci.appveyor.com/project/SbastienRombauts/SQLiteCpp "AppVeyor Windows Build status")
 [![GitHub Actions Build status](https://github.com/SRombauts/SQLiteCpp/workflows/build/badge.svg)](https://github.com/SRombauts/SQLiteCpp/actions "GitHhub Actions Build status")
-[![Coveralls](https://img.shields.io/coveralls/SRombauts/SQLiteCpp.svg)](https://coveralls.io/github/SRombauts/SQLiteCpp "Coveralls test coverage")
+[![Coveralls](https://img.shields.io/coveralls/github/SRombauts/SQLiteCpp/master.svg)](https://coveralls.io/github/SRombauts/SQLiteCpp "Coveralls test coverage")
 [![Coverity](https://img.shields.io/coverity/scan/14508.svg)](https://scan.coverity.com/projects/srombauts-sqlitecpp "Coverity Scan Build Status")
 [![Join the chat at https://gitter.im/SRombauts/SQLiteCpp](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/SRombauts/SQLiteCpp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -69,7 +69,7 @@ Now requires a C++11 compiler. Use branch [sqlitecpp-2.x](https://github.com/SRo
 
 Developments and tests are done under the following OSs:
 - Ubuntu 14.04, 16.04 and 18.04 (Travis CI and Github Actions)
-- Windows 10, and Windows Server 2012 R2, Windows Server 2016, Windows Server 2022 (AppVeyor and Github Actions)
+- Windows 10, and Windows Server 2012 R2, Windows Server 2016, Windows Server 2022, Windows Server 2025 (AppVeyor and Github Actions)
 - MacOS 10.11 and 11.7 (Travis CI and Github Actions)
 - Valgrind memcheck tool
 
@@ -78,13 +78,14 @@ And the following IDEs/Compilers
 - Clang 5 and 7 (Travis CI)
 - AppleClang 8, 9 and 13 (Travis CI and Github Actions)
 - Xcode 8 & 9 (Travis CI)
-- Visual Studio Community/Entreprise 2022, 2019, 2017, and 2015 (AppVeyor and Github Actions)
+- Visual Studio Community/Entreprise 2026, 2022, 2019, 2017, and 2015 (AppVeyor and Github Actions)
 
 ### Dependencies
 
 - a modern C++11 STL implementation with GCC, Clang, or Visual Studio 2015
 - exception support (the class Exception inherits from std::runtime_error)
-- the SQLite library (3.7.15 minimum from 2012-12-12) either by linking to it dynamically or statically (install the libsqlite3-dev package under Debian/Ubuntu/Mint Linux),
+- the SQLite library (3.8.7 minimum from 2014-10-17), either by linking to it dynamically or statically
+  (install the libsqlite3-dev package under Debian/Ubuntu/Mint Linux),
   or by adding its source file in your project code base (source code provided in src/sqlite3 for Windows),
   with the `SQLITE_ENABLE_COLUMN_METADATA` macro defined (see http://www.sqlite.org/compile.html#enable_column_metadata).
 
@@ -351,6 +352,19 @@ try
 catch (std::exception& e)
 {
     std::cout << "exception: " << e.what() << std::endl;
+}
+```
+
+`Statement` also provides a `RowIterator`, so the loop above can be written as a range-based `for`:
+
+```C++
+for (auto&& row : query)
+{
+    int         id      = row.getColumn(0);
+    const char* value   = row.getColumn(1);
+    int         size    = row.getColumn(2);
+
+    std::cout << "row: " << id << ", " << value << ", " << size << std::endl;
 }
 ```
 
