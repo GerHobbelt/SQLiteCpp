@@ -1,20 +1,20 @@
 # Main CMake file for compiling the library itself, examples and tests.
 #
-# Copyright (c) 2012-2025 Sebastien Rombauts (sebastien.rombauts@gmail.com)
+# Copyright (c) 2012-2026 Sebastien Rombauts (sebastien.rombauts@gmail.com)
 #
 # Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
 # or copy at http://opensource.org/licenses/MIT)
-cmake_minimum_required(VERSION 3.5...4.0)
+cmake_minimum_required(VERSION 3.16...4.4)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake") # custom CMake modules like FindSQLiteCpp
-project(SQLiteCpp VERSION 3.3.3)
+project(SQLiteCpp VERSION 4.0.0)
 
-# SQLiteC++ 3.x requires C++11 features
+# SQLiteCpp requires C++17 features
 if (NOT CMAKE_CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD 11)
-elseif (CMAKE_CXX_STANDARD LESS 11)
-    message(WARNING "CMAKE_CXX_STANDARD has been set to '${CMAKE_CXX_STANDARD}' which is lower than the minimum required standard (c++11).")
+    set(CMAKE_CXX_STANDARD 17)
+elseif (CMAKE_CXX_STANDARD LESS 17)
+    message(FATAL_ERROR "CMAKE_CXX_STANDARD has been set to '${CMAKE_CXX_STANDARD}' which is lower than the minimum required standard (c++17).")
 endif ()
-message(STATUS "Using c++ standard c++${CMAKE_CXX_STANDARD}")
+message(STATUS "Using C++ standard C++${CMAKE_CXX_STANDARD}")
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 message (STATUS "CMake version: ${CMAKE_VERSION}")
@@ -211,6 +211,7 @@ endif()
 
 # add sources of the wrapper as a "SQLiteCpp" static library
 add_library(SQLiteCpp ${SQLITECPP_SRC} ${SQLITECPP_INC} ${SQLITECPP_DOC} ${SQLITECPP_SCRIPT})
+target_compile_features(SQLiteCpp PUBLIC cxx_std_17)
 
 # Options relative to SQLite and SQLiteC++ functions
 
@@ -453,7 +454,7 @@ if (SQLITECPP_RUN_CPPCHECK)
                 --enable=style
                 --error-exitcode=1
                 --quiet
-                --std=c++11
+                --std=c++17
                 ${CPPCHECK_ARG_TEMPLATE}
                 ${PROJECT_SOURCE_DIR}/src
         )
@@ -522,6 +523,8 @@ if (SQLITECPP_BUILD_TESTS)
         # don't build the googlemock subproject, only the main googletest library
         set(BUILD_GMOCK OFF CACHE BOOL "Builds the googlemock subproject")
         add_subdirectory(googletest)
+        get_directory_property(GOOGLETEST_VERSION DIRECTORY googletest DEFINITION GOOGLETEST_VERSION)
+        message(STATUS "GoogleTest submodule version: ${GOOGLETEST_VERSION}")
         include_directories("${PROJECT_SOURCE_DIR}/googletest/googletest/include")
 
         # Add definitions to keep googletest from making the compilation fail
@@ -552,4 +555,4 @@ else (SQLITECPP_BUILD_TESTS)
 endif (SQLITECPP_BUILD_TESTS)
 
 # API version for SQLiteCpp shared library.
-set_property(TARGET SQLiteCpp PROPERTY SOVERSION 0)
+set_property(TARGET SQLiteCpp PROPERTY SOVERSION 1)

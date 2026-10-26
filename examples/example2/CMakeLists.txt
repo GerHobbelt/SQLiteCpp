@@ -1,14 +1,14 @@
 # Example CMake file for compiling & linking a project with the the SQLiteCpp wrapper
 #
-# Copyright (c) 2012-2023 Sebastien Rombauts (sebastien.rombauts@gmail.com)
+# Copyright (c) 2012-2026 Sebastien Rombauts (sebastien.rombauts@gmail.com)
 #
 # Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
 # or copy at http://opensource.org/licenses/MIT) 
-cmake_minimum_required(VERSION 3.5...4.0)
+cmake_minimum_required(VERSION 3.16...4.4)
 project(SQLiteCpp_Example VERSION 2.0)
 
-# SQLiteC++ 3.x now requires C++11 compiler
-set(CMAKE_CXX_STANDARD 11)
+# SQLiteCpp requires a C++17 compiler
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Add SQLite3 C++ wrapper around sqlite3 library (and sqlite3 itself provided for ease of use)
